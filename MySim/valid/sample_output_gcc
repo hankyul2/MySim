@@ -29,7 +29,7 @@
 28 fu{0} src{3,-1} dst{2} FE{9,1} DE{10,1} RN{11,1} DI{12,1} IS{13,1} RR{14,1} EX{15,1} WB{16,1} CM{17,5}
 29 fu{0} src{2,-1} dst{2} FE{9,1} DE{10,1} RN{11,1} DI{12,1} IS{13,2} RR{15,1} EX{16,1} WB{17,1} CM{18,4}
 # === Simulator Command =========
-# ./cse561sim 60 15 3 ../inputs/sample_input_gcc
+# ./cse561sim 60 15 3 traces/sample_input_gcc 
 # === Processor Configuration ===
 # ROB_SIZE = 60
 # IQ_SIZE  = 15

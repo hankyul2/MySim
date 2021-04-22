@@ -21,5 +21,5 @@ class Output:
     def append_simulation_result(self, inst_cnt, cycle):
         self.result.append("# === Simulation Results ========")
         self.result.append("# Dynamic Instruction Count = {}".format(inst_cnt))
-        self.result.append("# Cycles = {}".format(cycle))
+        self.result.append("# Cycles                    = {}".format(cycle))
         self.result.append("# Instructions Per Cycle    = {:.3}".format(inst_cnt/cycle))
