@@ -1,7 +1,6 @@
 *.o
 cse561sim
 scope
-test
 
 # Editors
 .vscode/
