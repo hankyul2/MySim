@@ -28,6 +28,10 @@ class Instruction:
         return int(self.str_inst.split(" ")[2])
 
     @property
+    def arch_src(self):
+        return list(map(int, self.str_inst.split(" ")[3:5]))
+
+    @property
     def arch_src1(self):
         return int(self.str_inst.split(" ")[3])
 

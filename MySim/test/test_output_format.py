@@ -1,3 +1,4 @@
+from MySim.src.instruction import Instruction
 from MySim.src.output_format import Output
 
 
@@ -6,15 +7,16 @@ def test_construction():
 
 
 def test_make_line():
+    inst = Instruction("2b6420 0 -1 29 14")
     output = Output()
-    output.insert_line(0, [29, 14], -1, [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1]])
-    assert "0 fu{0} src{29,14} dst{-1} FE{0,1} DE{1,1} RN{2,1} DI{3,1} IS{4,1} RR{5,1} EX{6,1} WB{7,1} CM{8,1}" \
+    output.insert_line(inst)
+    assert "0 fu{0} src{29,14} dst{-1} FE{0,0} DE{0,0} RN{0,0} DI{0,0} IS{0,0} RR{0,0} EX{0,0} WB{0,0} CM{0,0}" \
            == output.result[0]
 
 
 def test_append_command():
     output = Output()
-    output.append_command("./cse561sim 60 15 3 traces/sample_input_gcc")
+    output.append_command("./cse561sim 60 15 3 ../inputs/sample_input_gcc")
     assert 6 == len(output.result)
 
 

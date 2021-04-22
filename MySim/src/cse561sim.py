@@ -20,8 +20,8 @@ class MySim:
         cpu.run()
 
         output = Output()
-        for i in range(30):
-            output.insert_line(0, [29, 14], -1, [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1], [6, 1], [7, 1], [8, 1]])
+        for code in self.codes:
+            output.insert_line(code)
         output.append_command(self.argv)
         output.append_simulation_result(30, 21)
         with open('../outputs/sample_output_gcc', 'wt') as f:

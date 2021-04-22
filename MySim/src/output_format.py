@@ -3,11 +3,11 @@ class Output:
         self.attr_list = ["FE", "DE", "RN", "DI", "IS", "RR", "EX", "WB", "CM"]
         self.result = []
 
-    def insert_line(self, op_type, src, dest, pipe_lines):
+    def insert_line(self, inst):
         line_num = len(self.result)
-        op_line = "{} fu{{{}}} src{{{}}} dst{{{}}}".format(line_num, op_type, ",".join(map(str, src)), dest)
+        op_line = "{} fu{{{}}} src{{{}}} dst{{{}}}".format(line_num, inst.op_type, ",".join(map(str, inst.arch_src)), inst.arch_dest)
         stage_line = [stage + "{{{}}}".format(",".join(map(str, value))) for stage, value in
-                      zip(self.attr_list, pipe_lines)]
+                      zip(self.attr_list, inst.registers)]
         self.result.append(op_line + " " + " ".join(stage_line))
 
     def append_command(self, cmd_arg):
