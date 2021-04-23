@@ -90,22 +90,25 @@ class CPU:
 
     def check_code_len(self):
         if len(self.codes) + len(self.ROB) + len(self.DE) + len(self.RN) + len(self.output) != self.trace_len:
-            raise Exception("Code misses")
+            raise Exception("Code misses", self.clock, len(self.codes), len(self.ROB), len(self.output), self.trace_len)
 
     def advance_cycle(self):
         self.clock += 1
         return bool(self.codes) or any([pipe for pipe in self.registers])
 
     def fetch(self):
-        if not self.codes or self.DE or len(self.ROB) + self.WIDTH > self.ROB.maxlen:
+        # Todo: It is a bit weird to not append instruction to ROB in fetch, if it checks ROB size in fetch stage.
+        # if not self.codes or self.DE or len(self.ROB) + self.WIDTH > self.ROB.maxlen:
+        if not self.codes or self.DE:
             return False
-        fe_len = self.WIDTH if len(self.codes) >= 3 else len(self.codes)
+        fe_len = self.WIDTH if len(self.codes) >= self.WIDTH else len(self.codes)
         for i in range(fe_len):
             self.codes[0].FE[0] = self.clock
             self.codes[0].FE[1] = 1
             self.codes[0].DE[0] = self.clock + 1
             self.codes[0].seq_no = self.seq
             self.seq += 1
+            # self.ROB.append(self.codes[0])
             self.DE.append(self.codes.pop(0))
         return True
 
@@ -119,9 +122,8 @@ class CPU:
         return True
 
     def rename(self):
-        # Todo: Why not to proceed if there is some instruction in RR bundle?
-        # if self.DI or self.RR:
-        if self.DI:
+        # Todo: if it push instruction to ROB in rename stage, it should check ROB size in rename stage.
+        if self.DI or len(self.ROB) + self.WIDTH > self.ROB.maxlen:
             return False
         while self.register_available():
             inst = self.RN[0]
@@ -153,9 +155,11 @@ class CPU:
         return False
 
     def dispatch(self):
-        if len(self.IQ) + len(self.DI) > self.IQ.maxlen:
-            return False
-        while self.DI:
+        # Todo: It can dispatch instruction to IQ until Instruction Queue is not fully occupied
+        # if len(self.IQ) + len(self.DI) > self.IQ.maxlen:
+        #     return False
+        while self.DI and len(self.IQ) < self.IQ.maxlen:
+        # while self.DI:
             self.DI[0].DI[1] = self.clock - self.DI[0].DI[0] + 1
             self.DI[0].IS[0] = self.clock + 1
             if self.DI[0].phys_dest != -1:
