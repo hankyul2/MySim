@@ -1,4 +1,5 @@
 from dataclasses import dataclass, field
+from typing import List
 
 
 @dataclass
@@ -14,6 +15,9 @@ class Instruction:
     seq_no: int = field(default=0)
 
     registers: int = field(default_factory=lambda: [[0, 0] for reg in range(9)])
+
+    ready: bool = field(default=False)
+    Done: bool = field(default=False)
 
     @property
     def pc(self):
@@ -40,7 +44,7 @@ class Instruction:
         return int(self.str_inst.split(" ")[4])
 
     @property
-    def FE(self):
+    def FE(self) -> List:
         return self.registers[0]
 
     @property

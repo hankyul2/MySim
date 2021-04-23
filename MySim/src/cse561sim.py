@@ -15,16 +15,16 @@ class MySim:
             trace = f.readlines()
             self.codes = [Instruction(inst) for inst in trace]
 
-    def execute_program(self):
-        cpu = CPU(self.codes)
+    def execute_program(self, output_path):
+        cpu = CPU(self.ROB_SZ, self.IQ_SIZE, self.WIDTH, self.codes)
         cpu.run()
 
         output = Output()
-        for code in self.codes:
+        for code in cpu.output:
             output.insert_line(code)
         output.append_command(self.argv)
-        output.append_simulation_result(30, 21)
-        with open('../outputs/sample_output_gcc', 'wt') as f:
+        output.append_simulation_result(cpu.seq, cpu.clock)
+        with open(output_path, 'wt') as f:
             f.writelines([out+"\n" for out in output.result])
         return len(output.result)
 
