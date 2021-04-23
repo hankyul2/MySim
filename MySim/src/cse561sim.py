@@ -15,7 +15,7 @@ class MySim:
             trace = f.readlines()
             self.codes = [Instruction(inst) for inst in trace]
 
-    def execute_program(self, output_path):
+    def execute_program(self, output_path=None, debug=False):
         cpu = CPU(self.ROB_SZ, self.IQ_SIZE, self.WIDTH, self.codes)
         cpu.run()
 
@@ -24,9 +24,13 @@ class MySim:
             output.insert_line(code)
         output.append_command(self.argv)
         output.append_simulation_result(cpu.seq, cpu.clock)
-        with open(output_path, 'wt') as f:
-            f.writelines([out+"\n" for out in output.result])
-        return len(output.result)
+        if output_path:
+            with open(output_path, 'wt') as f:
+                f.writelines([out+"\n" for out in output.result])
+        if debug:
+            for trace_output in output.result:
+                print(trace_output)
+        return len(output.result), cpu.seq/cpu.clock
 
 
     
