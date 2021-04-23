@@ -1,67 +1,16 @@
-Modeling Out-of-Order Execution Core
-=====================================
-CSE561 Advanced Computer Architecture @ Ajou University (Spring 2021)
+# My Simulator
 
-This is the first project for CSE561. You should follow a given handout in details.
-If you have questions regarding to the project, you may send an email to the TAs
-or you could use the Q&A board on AjouBB.
+이 프로젝트는 2021 아주대학교 봄학기 고급컴퓨터구조(CSE561) 수업의 일환으로 하게 되었다.
 
-File Tree
-=========
-```
-./trace/
-    |
-    --> ./sample_input_gcc
-    --> ./sample_input_perl
-    --> ./val_trace_gcc1        # this file is a basic trace for validation
-                                # you should use this file to validate your app
-    --> ./val_trace_perl1       # this file is a basic trace for validation
-                                # you should use this file to validate your app
+Out of order superscalar processor를 구현해보고 수업시간에 배운 이론을 활용하여 ROB, IQ, Width를 조절해보면서 프로세서의 성능에 영향을 얼마나 미치는지 확인해 보는것이 주요 목표이다. 
 
-./validation/
-    |
-    --> ./sample_output_gcc     # this file is produced when your app reads 
-                                # `sample_input_gcc` and processes it
-    --> ./sample_output_perl    # this file is produced when your app reads 
-                                # `sample_input_perl` and processes it
-    --> ./sample_scope_gcc      # this file is produced when `scope` reads
-                                # `sample_output_gcc` and processes it
-    --> ./sample_scope_perl     # this file is produced when `scope` reads
-                                # `sample_output_perl` and processes it
 
-./scopetool/
-    |
-    --> ./main.cc
-    --> ./Makefile
-    --> ./printline.h
+
+## How to use it
+
+파이썬만 설치되어 있다면 사용할 수 있다.
+
+```bash
+python MySim/main.py 256 64 40 MySim/inputs/val_trace_gcc1
 ```
 
-Scope
-=====
-```
-# how to compile
-$ pwd
-/home/user/project1/scopetool
-
-$ make
-
-# how to use
-$ scope <input> <output>
-```
-
-
-Validation
-==========
-Students should check individual's app whether it properly works (e.g.
-pipeline properly works on each cycle or each instruction processed in
-the right order). For validation, students need to use the provided
-trace files under `trace` directory. A sample file is a part of each
-`real` trace file (e.g. `val_trace_*`). The purpose of giving the sample
-is to give some idea for how to design a project and how sample outputs
-look like. Students should test their app with various input options so
-that the app works in all cases.
-
-TAs
-======
-* Wonkyo Choe (heysid at ajou.ac.kr)
-* Taeklim Kim (limkim4233 at ajou.ac.kr)
