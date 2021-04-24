@@ -85,7 +85,6 @@ class CPU:
             self.fetch()
             if not self.advance_cycle():
                 break
-            self.check_code_len()
         self.clock -= 1
 
     def check_code_len(self):
@@ -93,12 +92,11 @@ class CPU:
             raise Exception("Code misses", self.clock, len(self.codes), len(self.ROB), len(self.output), self.trace_len)
 
     def advance_cycle(self):
+        self.check_code_len()
         self.clock += 1
         return bool(self.codes) or any([pipe for pipe in self.registers])
 
     def fetch(self):
-        # Todo: It is a bit weird to not append instruction to ROB in fetch, if it checks ROB size in fetch stage.
-        # if not self.codes or self.DE or len(self.ROB) + self.WIDTH > self.ROB.maxlen:
         if not self.codes or self.DE:
             return False
         fe_len = self.WIDTH if len(self.codes) >= self.WIDTH else len(self.codes)
@@ -108,7 +106,6 @@ class CPU:
             self.codes[0].DE[0] = self.clock + 1
             self.codes[0].seq_no = self.seq
             self.seq += 1
-            # self.ROB.append(self.codes[0])
             self.DE.append(self.codes.pop(0))
         return True
 
@@ -122,8 +119,7 @@ class CPU:
         return True
 
     def rename(self):
-        # Todo: if it push instruction to ROB in rename stage, it should check ROB size in rename stage.
-        if self.DI or len(self.ROB) + self.WIDTH > self.ROB.maxlen:
+        if self.DI:
             return False
         while self.register_available():
             inst = self.RN[0]
@@ -156,10 +152,7 @@ class CPU:
 
     def dispatch(self):
         # Todo: It can dispatch instruction to IQ until Instruction Queue is not fully occupied
-        # if len(self.IQ) + len(self.DI) > self.IQ.maxlen:
-        #     return False
         while self.DI and len(self.IQ) < self.IQ.maxlen:
-        # while self.DI:
             self.DI[0].DI[1] = self.clock - self.DI[0].DI[0] + 1
             self.DI[0].IS[0] = self.clock + 1
             if self.DI[0].phys_dest != -1:
@@ -230,11 +223,9 @@ class CPU:
         return True
 
     def register_available(self):
-        # Todo: Precalculate how many registers are available
-        # if bool(self.RN) and len(list(filter(lambda x: x.arch_dest != FREE, self.RN))) <= \
-        #         len(list(filter(lambda x: x == FREE, self.READY))):
-        #     print("hello2")
-        if bool(self.RN):
+        # Todo: Precalculate how many registers are available -> it only make complicate structure
+        # Todo: if it push instruction to ROB in rename stage, it should check ROB size in rename stage. -> Good!
+        if bool(self.RN) and len(self.ROB) < self.ROB.maxlen:
             return True
         else:
             return False

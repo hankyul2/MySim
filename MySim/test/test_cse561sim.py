@@ -21,7 +21,7 @@ def test_execute_program_len():
     assert 40 == sim.execute_program('../outputs/sample_output_gcc')[0]
 
 def test_execute_program_len2():
-    sim = MySim("./cse561sim 256 64 40 ../inputs/val_trace_gcc1")
+    sim = MySim("./cse561sim 1 1 2 ../inputs/val_trace_gcc1")
     assert 10010 == sim.execute_program('../outputs/val_output_gcc1')[0]
 
 def test_execute_program_len3():
