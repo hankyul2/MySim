@@ -15,13 +15,13 @@ ip_list = []
 for ROB in power_range:
     for IQ in power_range:
         for WIDTH in base_range:
-            sim = MySim("MySim/main.py {} {} {} inputs/val_trace_gcc1".format(ROB, IQ, WIDTH))
+            sim = MySim("MySim/main.py {} {} {} inputs/val_trace_perl1".format(ROB, IQ, WIDTH))
             _, IPC = sim.execute_program()
-            print("MySim/main.py {} {} {} inputs/val_trace_gcc1 : {}".format(ROB, IQ, WIDTH, IPC))
+            print("MySim/main.py {} {} {} inputs/val_trace_perl1 : {}".format(ROB, IQ, WIDTH, IPC))
             rob_list.append(ROB)
             iq_list.append(IQ)
             width_list.append(WIDTH)
             ip_list.append(IPC)
 
 df = pd.DataFrame({"ROB": rob_list, "IQ": iq_list, "WIDTH": width_list, "IPC": ip_list})
-df.to_csv("search_1")
+df.to_csv("search_perl.csv")
