@@ -94,7 +94,7 @@ class CPU:
     def advance_cycle(self):
         self.check_code_len()
         self.clock += 1
-        return bool(self.codes) or any([pipe for pipe in self.registers])
+        return bool(self.codes) or any([bool(pipe) for pipe in self.registers]) or len(self.ROB)
 
     def fetch(self):
         if not self.codes or self.DE:
