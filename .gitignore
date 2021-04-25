@@ -1,6 +1,7 @@
 *.o
 cse561sim
 scope
+cse561-project1
 
 MySim/inputs/*
 MySim/outputs/*
