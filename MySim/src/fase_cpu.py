@@ -88,7 +88,7 @@ class CPU:
         self.clock -= 1
 
     def check_code_len(self):
-        if len(self.codes) + len(self.ROB) + len(self.output) != self.trace_len:
+        if len(self.codes) + len(self.ROB) + len(self.DE) + len(self.RN) + len(self.output) != self.trace_len:
             raise Exception("Code misses", self.clock, len(self.codes), len(self.ROB), len(self.output), self.trace_len)
 
     def advance_cycle(self):
@@ -100,15 +100,12 @@ class CPU:
         if not self.codes or self.DE:
             return False
         fe_len = self.WIDTH if len(self.codes) >= self.WIDTH else len(self.codes)
-        if len(self.ROB) + self.WIDTH > self.ROB.maxlen:
-            return False
         for i in range(fe_len):
             self.codes[0].FE[0] = self.clock
             self.codes[0].FE[1] = 1
             self.codes[0].DE[0] = self.clock + 1
             self.codes[0].seq_no = self.seq
             self.seq += 1
-            self.ROB.append(self.codes[0])
             self.DE.append(self.codes.pop(0))
         return True
 
@@ -139,6 +136,7 @@ class CPU:
                 inst.old_phys_dest = -1
                 inst.phys_dest = -1
             self.RN.pop(0)
+            self.ROB.append(inst)
             inst.RN[1] = self.clock - inst.RN[0] + 1
             inst.DI[0] = self.clock + 1
             self.DI.append(inst)
@@ -154,9 +152,9 @@ class CPU:
 
     def dispatch(self):
         # Todo: It can dispatch instruction to IQ until Instruction Queue is not fully occupied
-        if len(self.IQ) + len(self.DI) > self.IQ.maxlen:
-            return False
-        while self.DI:
+        if self.clock == 22:
+            print(len(self.IQ))
+        while self.DI and len(self.IQ) < self.IQ.maxlen:
             self.DI[0].DI[1] = self.clock - self.DI[0].DI[0] + 1
             self.DI[0].IS[0] = self.clock + 1
             if self.DI[0].phys_dest != -1:
@@ -231,7 +229,7 @@ class CPU:
     def register_available(self):
         # Todo: Precalculate how many registers are available -> it only make complicate structure
         # Todo: if it push instruction to ROB in rename stage, it should check ROB size in rename stage. -> Good!
-        if bool(self.RN):
+        if bool(self.RN) and len(self.ROB) < self.ROB.maxlen:
             return True
         else:
             return False
