@@ -11,6 +11,7 @@ Out of order superscalar processor를 구현해보고 수업시간에 배운 이
 파이썬만 설치되어 있다면 사용할 수 있다.
 
 ```bash
+# 맨 뒤에 등장하는 MySim/inputs/val_trace_gcc1은 프로그램의 인풋 트레이스 파일의 경로를 나타내는 부분 이다.
 python MySim/main.py 256 64 40 MySim/inputs/val_trace_gcc1
 ```
 
