@@ -26,7 +26,7 @@ class MySim:
         output.append_simulation_result(cpu.seq, cpu.clock)
         if output_path:
             with open(output_path, 'wt') as f:
-                f.writelines([out+"\n" if out != output.result[-1] else out for out in output.result])
+                f.writelines([out+"\n" for out in output.result])
         if debug:
             for trace_output in output.result:
                 print(trace_output)

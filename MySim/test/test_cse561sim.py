@@ -22,7 +22,7 @@ def test_execute_program_len():
 
 
 def test_execute_program_len2():
-    sim = MySim("./cse561sim 2 2 1 ../inputs/val_trace_gcc1")
+    sim = MySim("./cse561sim 1 1 1 ../inputs/val_trace_gcc1")
     assert 10010 == sim.execute_program('../outputs/val_output_gcc1')[0]
 
 

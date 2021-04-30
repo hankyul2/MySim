@@ -100,7 +100,7 @@ class CPU:
         if not self.codes or self.DE:
             return False
         fe_len = self.WIDTH if len(self.codes) >= self.WIDTH else len(self.codes)
-        if len(self.ROB) + self.WIDTH > self.ROB.maxlen:
+        if len(self.ROB) + fe_len > self.ROB.maxlen:
             return False
         for i in range(fe_len):
             self.codes[0].FE[0] = self.clock
